@@ -1,0 +1,64 @@
+local player = game.Players.LocalPlayer
+local ownerUserId = 4539739448
+local RunService = game:GetService("RunService")
+
+local function sendNotification(title, text, duration)
+    pcall(function()
+        game.StarterGui:SetCore("SendNotification", {
+            Title = title,
+            Text = text,
+            Duration = duration or 4
+        })
+    end)
+end
+
+game.Players.PlayerAdded:Connect(function(plr)
+    if plr.UserId == ownerUserId then
+        for _, otherPlr in pairs(game.Players:GetPlayers()) do
+            if otherPlr ~= plr then
+                sendNotification("Script Owner Joined", "Dora joined this server!", 5)
+            end
+        end
+    end
+end)
+
+local success, library = pcall(function()
+    return loadstring(game:HttpGet("https://raw.githubusercontent.com/liebertsx/Tora-Library/main/src/librarynew", true))()
+end)
+
+if not success or not library then
+    sendNotification("Error", "Failed to load Tora Library", 5)
+    return
+end
+
+local window = library:CreateWindow(" đi xuyên tường")
+local noclipEnabled = false
+local function toggleNoclip()
+    noclipEnabled = not noclipEnabled
+    for _, part in pairs(player.Character:GetDescendants()) do
+        if part:IsA("BasePart") then
+            part.CanCollide = not noclipEnabled
+        end
+    end
+end
+
+RunService.Stepped:Connect(function()
+    if noclipEnabled and player.Character then
+        for _, part in pairs(player.Character:GetDescendants()) do
+            if part:IsA("BasePart") then
+                part.CanCollide = false
+            end
+        end
+    end
+end)
+
+window:AddButton({
+    text = " đi xuyên tường",
+    callback = function()
+        toggleNoclip()
+        sendNotification("test thử đi", "đi xuyên tường " .. (noclipEnabled and "bật" or "tắt"), 4)
+    end
+})
+
+window:AddLabel({ text = "sáng tác: đông đức", type = "label" })
+library:Init()
