@@ -1,0 +1,5 @@
+@yeuvietnam: local button = Instance.new("TextButton")
+button.Name = "NPC Lock: ON/OFF"
+button.Size = UDim2.new(0, 150, 0, 50)
+button.Position = UDim2.new(0.5, -75, 0.9, -25)
+button.BackgroundColor3 = Colo
